@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
+        <Property name="APP_LOG_ROOT">../</Property>
+    </Properties>
+
+    <properties>
+        <property name="filters">org.junit,org.apache.maven,sun.reflect,java.lang.reflect</property>
+    </properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <RollingFile name="appLog"
+                     fileName="/home/agoda-revised/AgodaRevisedApplication.log"
+                     filePattern="/home/agoda-revised/application-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1"/>
+        </RollingFile>
+
+        <RegexFilter regex="(?s).*agoda-revised.*"
+                     onMatch="ACCEPT" onMismatch="DENY"/>
+        <RegexFilter regex="(?s).*springframework.*"
+                     onMatch="DENY" onMismatch="NEUTRAL"/>
+        <RegexFilter regex="(?s).*hikari.*"
+                     onMatch="ACCEPT" onMismatch="DENY"/>
+
+        <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+
+    </Appenders>
+    <Loggers>
+
+        <Logger name="com.example.Klouud.AgodaJson" additivity="false">
+            <AppenderRef ref="appLog"/>
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="appLog"/>
+        </Root>
+    </Loggers>
+</Configuration>
